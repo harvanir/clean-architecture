@@ -1,0 +1,123 @@
+<configuration scan="true">
+    <property resource="logback.properties"/>
+
+    <appender class="ch.qos.logback.core.ConsoleAppender" name="STDOUT">
+        <encoder>
+            <pattern>${logback.stdoutMessagePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="PROJECT">
+        <file>${logback.fileDirectory}${logback.fileNamePrefix}-project.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${logback.fileDirectory}.%d{yyyy-MM-dd}.%i-${logback.fileNamePrefix}-project.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logback.maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+            <maxHistory>${logback.maxHistoryDays}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${logback.fileMessagePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="APP">
+        <file>${logback.fileDirectory}${logback.fileNamePrefix}-app.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${logback.fileDirectory}.%d{yyyy-MM-dd}.%i-${logback.fileNamePrefix}-app.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logback.maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+            <maxHistory>${logback.maxHistoryDays}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${logback.fileMessagePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="SPRING">
+        <file>${logback.fileDirectory}${logback.fileNamePrefix}-spring.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${logback.fileDirectory}.%d{yyyy-MM-dd}.%i-${logback.fileNamePrefix}-spring.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logback.maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+            <maxHistory>${logback.maxHistoryDays}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${logback.fileMessagePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="REPOSITORY">
+        <file>${logback.fileDirectory}${logback.fileNamePrefix}-repository.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${logback.fileDirectory}.%d{yyyy-MM-dd}.%i-${logback.fileNamePrefix}-repository.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${logback.maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+            <maxHistory>${logback.maxHistoryDays}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${logback.fileMessagePattern}</pattern>
+        </encoder>
+    </appender>
+
+    <logger additivity="false" level="DEBUG" name="org.harvanir">
+        <appender-ref ref="APP"/>
+    </logger>
+
+    <logger additivity="false" level="DEBUG" name="org.springframework">
+        <appender-ref ref="SPRING"/>
+    </logger>
+
+    <!--  Repository - Start -->
+    <logger additivity="false" level="DEBUG" name="org.hibernate">
+        <appender-ref ref="REPOSITORY"/>
+    </logger>
+    <logger additivity="false" level="DEBUG" name="org.hibernate.SQL">
+        <appender-ref ref="REPOSITORY"/>
+    </logger>
+    <logger additivity="false" level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder">
+        <appender-ref ref="REPOSITORY"/>
+    </logger>
+    <logger additivity="false" level="ERROR"
+            name="org.hibernate.internal.ExceptionMapperStandardImpl"/>
+    <logger additivity="false" level="DEBUG" name="com.querydsl">
+        <appender-ref ref="REPOSITORY"/>
+    </logger>
+    <!--  Repository - End -->
+
+    <root level="DEBUG">
+        <appender-ref ref="PROJECT"/>
+    </root>
+
+</configuration>
