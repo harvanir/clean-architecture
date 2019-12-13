@@ -10,6 +10,7 @@ import org.harvanir.pattern.clean.app.item.entity.ItemResponse;
 import org.harvanir.pattern.clean.app.item.gateway.ItemGateway;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 /** @author Harvan Irsyadi */
 public class ItemGatewayJpa implements ItemGateway {
@@ -28,6 +29,7 @@ public class ItemGatewayJpa implements ItemGateway {
     return mapper.map(itemJpaRepository.save(mapper.map(request)));
   }
 
+  @Transactional
   @Override
   public ItemResponse increase(Long id, int increment) {
     Item item = itemJpaRepository.getOne(id);
@@ -40,7 +42,7 @@ public class ItemGatewayJpa implements ItemGateway {
     return QItem.item;
   }
 
-  private QBean<ItemResponse> getExpressionBase() {
+  private QBean<ItemResponse> getBaseExpression() {
     QItem item = getItem();
 
     return Projections.bean(
@@ -55,11 +57,11 @@ public class ItemGatewayJpa implements ItemGateway {
 
   @Override
   public Page<ItemResponse> findAll(Pageable pageable) {
-    return itemJpaRepository.findAll(getExpressionBase(), pageable);
+    return itemJpaRepository.findAll(getBaseExpression(), pageable);
   }
 
   @Override
   public ItemResponse findById(Long id) {
-    return itemJpaRepository.findOne(getExpressionBase(), getItem().id.eq(id));
+    return itemJpaRepository.findOne(getBaseExpression(), getItem().id.eq(id));
   }
 }

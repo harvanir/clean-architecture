@@ -55,5 +55,5 @@ public class Item {
 
   @LastModifiedBy @Column private Date updatedAt;
 
-  @Version @Column private Long version;
+  @Version @Column private long version;
 }

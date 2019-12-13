@@ -49,5 +49,5 @@ public class Order {
 
   @LastModifiedDate @Column private Date updatedAt;
 
-  @Version @Column private Integer version;
+  @Version @Column private int version;
 }
