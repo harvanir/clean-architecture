@@ -2,7 +2,6 @@ package org.harvanir.pattern.clean.jpa.configuration;
 
 import org.harvanir.pattern.clean.jpa.support.JpaEnhancedRepository;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,6 +17,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     basePackages = BaseJpaConstant.JPA_REPOSITORY_PACKAGE)
 @EnableJpaAuditing
 @EntityScan(BaseJpaConstant.ENTITY_SCAN_PACKAGE)
-@ComponentScan(BaseJpaConstant.COMPONENT_SCAN_PACKAGE)
 @Configuration(proxyBeanMethods = false)
 public class BaseJpaConfiguration {}
