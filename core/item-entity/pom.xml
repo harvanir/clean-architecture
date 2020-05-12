@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.harvanir.pattern.clean-architecture</groupId>
-        <artifactId>clean-architecture</artifactId>
+        <artifactId>clean-architecture-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../</relativePath>
+        <relativePath>../../parent/non-reactive</relativePath>
     </parent>
     <artifactId>item-entity</artifactId>
     <version>0.0.1-SNAPSHOT</version>

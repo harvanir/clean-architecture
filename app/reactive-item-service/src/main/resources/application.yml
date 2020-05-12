@@ -1,0 +1,43 @@
+info:
+  app:
+    name: ${spring.application.name}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
+server:
+  port: 8181
+spring:
+  application:
+    name: reactive-clean-architecture
+  r2dbc:
+    url: r2dbc:${app.datasource.url-suffix}
+    username: postgres
+    password: postgres
+    pool:
+      enabled: true
+      #      validation-query: SELECT 1; # slow performance when enabled
+      initial-size: 300
+      max-size: 300
+  flyway:
+    url: jdbc:${app.datasource.url-suffix}
+    user: ${spring.r2dbc.username}
+    password: ${spring.r2dbc.password}
+    enabled: true
+    baseline-on-migrate: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.flyway.FlywayEndpointAutoConfiguration
+  jackson:
+    time-zone: UTC
+logging:
+  level:
+    org.springframework.data: trace
+    org.springframework.transaction: trace
+    org.harvanir.pattern.clean.auditing: debug
+    io.r2dbc: trace
+app:
+  datasource:
+    url-suffix: postgresql://localhost:5432/reactivecleanarchitecture
