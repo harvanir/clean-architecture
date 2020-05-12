@@ -1,0 +1,91 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:12.2-alpine
+    container_name: postgres
+    ports:
+      - 15432:5432
+    networks:
+      - service
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    command: postgres -c 'max_connections=300'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./postgres/data:/var/lib/postgresql/data/:rw
+
+  item-service:
+    container_name: item-service
+    image: item-service
+    ports:
+      - 8181:8181
+      - 7001:7001
+    networks:
+      - service
+    depends_on:
+      - postgres
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7001 -Dcom.sun.management.jmxremote.rmi.port=7001
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  reactive-item-service:
+    container_name: reactive-item-service
+    image: reactive-item-service
+    ports:
+      - 8182:8181
+      - 7002:7002
+    networks:
+      - service
+    depends_on:
+      - postgres
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7002 -Dcom.sun.management.jmxremote.rmi.port=7002
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+networks:
+  service:
+    driver: bridge

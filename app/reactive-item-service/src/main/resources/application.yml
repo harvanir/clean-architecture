@@ -32,12 +32,11 @@ spring:
       - org.springframework.boot.actuate.autoconfigure.flyway.FlywayEndpointAutoConfiguration
   jackson:
     time-zone: UTC
-logging:
-  level:
-    org.springframework.data: trace
-    org.springframework.transaction: trace
-    org.harvanir.pattern.clean.auditing: debug
-    io.r2dbc: trace
+#logging:
+#  level:
+#    org.springframework.data: trace
+#    org.springframework.transaction: trace
+#    org.harvanir.pattern.clean.auditing: debug
 app:
   datasource:
-    url-suffix: postgresql://localhost:5432/reactivecleanarchitecture
+    url-suffix: postgresql://postgres:5432/reactivecleanarchitecture

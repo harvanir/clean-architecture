@@ -1,0 +1,10 @@
+#!/bin/sh
+cd app/item-service||exit
+../../mvnw clean install -Dmaven.test.skip=true
+docker build -t item-service .
+
+cd ../reactive-item-service||exit
+../../mvnw clean install -Dmaven.test.skip=true
+docker build -t reactive-item-service .
+
+cd ..
