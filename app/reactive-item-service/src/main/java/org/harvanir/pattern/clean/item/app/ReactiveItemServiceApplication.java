@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ReactiveCleanArchitectureApplication {
+public class ReactiveItemServiceApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(ReactiveCleanArchitectureApplication.class, args);
+    SpringApplication.run(ReactiveItemServiceApplication.class, args);
   }
 }
