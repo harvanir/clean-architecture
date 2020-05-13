@@ -2,7 +2,7 @@ server:
   port: 8181
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/cleanarchitecture
+    url: jdbc:postgresql://postgres:5432/cleanarchitecture
     username: postgres
     password: postgres
     hikari:
