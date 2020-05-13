@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class ItemResponse {
 
   private BigDecimal price;
 
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 }

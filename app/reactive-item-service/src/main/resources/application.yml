@@ -20,12 +20,6 @@ spring:
       #      validation-query: SELECT 1; # slow performance when enabled
       initial-size: 10 # default value
       max-size: 10 # default value
-  flyway:
-    url: jdbc:${app.datasource.url-suffix}
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
-    enabled: true
-    baseline-on-migrate: true
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
@@ -39,4 +33,4 @@ spring:
 #    org.harvanir.pattern.clean.auditing: debug
 app:
   datasource:
-    url-suffix: postgresql://localhost:5432/reactivecleanarchitecture
+    url-suffix: postgresql://localhost:5432/cleanarchitecture

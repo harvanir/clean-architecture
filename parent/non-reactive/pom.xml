@@ -26,5 +26,6 @@
         <module>../../core/item-usecase</module>
         <module>../../provider/item-gateway-provider</module>
         <module>../../app/item-service</module>
+        <module>../../migration/item-migration</module>
     </modules>
 </project>

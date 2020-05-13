@@ -57,6 +57,24 @@ services:
         limits:
           memory: 4g
 
+  item-migration:
+    container_name: item-migration
+    image: item-migration
+    networks:
+      - service
+    depends_on:
+      - postgres
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+        -XX:MaxRAMPercentage=90.0
+        -Dspring.profiles.active=docker
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
   item-service:
     container_name: item-service
     image: item-service
@@ -67,6 +85,7 @@ services:
       - service
     depends_on:
       - postgres
+      - item-migration
     ulimits:
       nproc: 514933
       nofile:
@@ -112,6 +131,7 @@ services:
       - service
     depends_on:
       - postgres
+      - item-migration
     ulimits:
       nofile:
         soft: 100000

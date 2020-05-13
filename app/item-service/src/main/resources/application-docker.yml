@@ -26,11 +26,11 @@ spring:
           use_jdbc_metadata_defaults: false
         format_sql: true
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-  flyway:
-    enabled: true
   autoconfigure:
     exclude:
     - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  jackson:
+    time-zone: UTC
 app:
   retry:
     max-attempts: 1000
