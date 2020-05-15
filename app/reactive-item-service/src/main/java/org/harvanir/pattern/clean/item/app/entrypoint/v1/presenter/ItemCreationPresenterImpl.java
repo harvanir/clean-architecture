@@ -1,6 +1,7 @@
 package org.harvanir.pattern.clean.item.app.entrypoint.v1.presenter;
 
 import org.harvanir.pattern.clean.item.app.entrypoint.v1.entity.ItemResponseRest;
+import org.harvanir.pattern.clean.item.app.entrypoint.v1.presenter.common.PresenterUtils;
 import org.harvanir.pattern.clean.item.core.entity.ItemResponse;
 import org.harvanir.pattern.clean.item.core.usecase.create.ItemCreationPresenter;
 import reactor.core.publisher.Mono;
@@ -17,12 +18,11 @@ public class ItemCreationPresenterImpl implements ItemCreationPresenter {
   }
 
   @Override
-  public Mono<Void> execute(ItemResponse response) {
-    this.response = beanMapper.mapToItemResponse(response);
-    return Mono.just(true).then();
+  public Mono<Void> execute(ItemResponse itemResponse) {
+    return PresenterUtils.present(() -> response = beanMapper.mapToItemResponse(itemResponse));
   }
 
   public Mono<ItemResponseRest> getResponse() {
-    return Mono.fromSupplier(() -> response);
+    return PresenterUtils.getResponse(() -> response);
   }
 }
