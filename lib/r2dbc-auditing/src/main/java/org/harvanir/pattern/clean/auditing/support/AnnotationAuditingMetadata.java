@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 /** @author Harvan Irsyadi */
-public class AnnotationAuditingMetadata {
+class AnnotationAuditingMetadata {
 
   private static final Map<Class<?>, AnnotationAuditingMetadata> CACHE =
       new ConcurrentReferenceHashMap<>();

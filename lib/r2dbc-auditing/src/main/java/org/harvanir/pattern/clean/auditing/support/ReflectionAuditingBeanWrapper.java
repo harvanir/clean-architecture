@@ -9,7 +9,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 /** @author Harvan Irsyadi */
-public class ReflectionAuditingBeanWrapper implements AuditableBeanWrapper {
+class ReflectionAuditingBeanWrapper implements AuditableBeanWrapper {
 
   private final Object source;
 
