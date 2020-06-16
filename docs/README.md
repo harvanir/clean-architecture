@@ -15,6 +15,10 @@
 - Test operation (DB Write): invoke API resource [POST]<code>/v1/items</code>
 - Test method: perform test individually.
 - Each JVM heap memory setup is done by changing the limit.memory in the docker-compose file.
+- For non reactive driver using fix 300 thread pool connections.
+- For reactive driver using 10-50 pool connections.
+
+![](topology.png)
 
 ## Using 158MB Heap size, 8 concurrent
 
@@ -72,9 +76,6 @@
 
 #### R2DBC with 10 pool
 ![](256mb-300c/4-b-vm-256m-300c.png)
-
-#### R2DBC w/o pool
-![](256mb-300c/4-c-vm-256m-300c.png)
 
 ## Using 256MB Heap size, 600 concurrent
 
