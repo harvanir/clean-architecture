@@ -1,7 +1,9 @@
 package org.harvanir.pattern.clean.item.core.usecase.find;
 
+import reactor.core.publisher.Mono;
+
 /** @author Harvan Irsyadi */
 public interface ItemFindUseCase {
 
-  void execute(Long id, ItemFindPresenter presenter);
+  Mono<Void> execute(Long id, ItemFindPresenter presenter);
 }

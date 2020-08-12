@@ -1,7 +1,7 @@
 package org.harvanir.pattern.clean.item.core.usecase.find;
 
-import org.harvanir.pattern.clean.item.core.entity.ItemResponse;
 import org.harvanir.pattern.clean.item.core.gateway.ItemGateway;
+import reactor.core.publisher.Mono;
 
 /** @author Harvan Irsyadi */
 public class DefaultItemFindUseCase implements ItemFindUseCase {
@@ -13,9 +13,7 @@ public class DefaultItemFindUseCase implements ItemFindUseCase {
   }
 
   @Override
-  public void execute(Long id, ItemFindPresenter presenter) {
-    ItemResponse response = itemGateway.findById(id);
-
-    presenter.present(response);
+  public Mono<Void> execute(Long id, ItemFindPresenter presenter) {
+    return itemGateway.findWithDelay(id).flatMap(presenter::execute);
   }
 }
