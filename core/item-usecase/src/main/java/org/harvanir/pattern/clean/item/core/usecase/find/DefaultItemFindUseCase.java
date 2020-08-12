@@ -13,7 +13,7 @@ public class DefaultItemFindUseCase implements ItemFindUseCase {
   }
 
   @Override
-  public void find(Long id, ItemFindPresenter presenter) {
+  public void execute(Long id, ItemFindPresenter presenter) {
     ItemResponse response = itemGateway.findById(id);
 
     presenter.present(response);

@@ -7,7 +7,7 @@ management:
       exposure:
         include: info,health,prometheus
 server:
-  port: 8181
+  port: 8182
 spring:
   application:
     name: reactive-clean-architecture
@@ -18,14 +18,8 @@ spring:
     pool:
       enabled: true
       #      validation-query: SELECT 1; # slow performance when enabled
-      initial-size: 300
-      max-size: 300
-  flyway:
-    url: jdbc:${app.datasource.url-suffix}
-    user: ${spring.r2dbc.username}
-    password: ${spring.r2dbc.password}
-    enabled: true
-    baseline-on-migrate: true
+      initial-size: 10 # default value
+      max-size: 10 # default value
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
@@ -39,4 +33,4 @@ spring:
 #    org.harvanir.pattern.clean.auditing: debug
 app:
   datasource:
-    url-suffix: postgresql://postgres:5432/reactivecleanarchitecture
+    url-suffix: postgresql://localhost:5432/cleanarchitecture

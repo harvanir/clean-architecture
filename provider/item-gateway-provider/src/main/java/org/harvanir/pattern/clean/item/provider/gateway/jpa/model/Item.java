@@ -15,11 +15,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,13 +31,8 @@ import java.util.Set;
 @Table(name = TableConstant.ITEMS)
 public class Item {
 
-  private static final String SEQ_GENERATORS = "item_generators";
-
-  private static final String SEQ_NAME = "seq_items";
-
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_GENERATORS)
-  @SequenceGenerator(name = SEQ_GENERATORS, sequenceName = SEQ_NAME)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
   private Long id;
 
@@ -51,9 +45,9 @@ public class Item {
 
   @Column private BigDecimal price;
 
-  @CreatedDate @Column private Date createdAt;
+  @CreatedDate @Column private LocalDateTime createdAt;
 
-  @LastModifiedDate @Column private Date updatedAt;
+  @LastModifiedDate @Column private LocalDateTime updatedAt;
 
   @Version @Column private long version;
 }

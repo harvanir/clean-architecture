@@ -3,7 +3,7 @@ package org.harvanir.pattern.clean.auditing.support;
 import java.util.Optional;
 
 /** @author Harvan Irsyadi */
-public class AuditingBeanWrapperFactory {
+class AuditingBeanWrapperFactory {
 
   public void populate(Class<?> clazz) {
     AnnotationAuditingMetadata.populate(clazz);

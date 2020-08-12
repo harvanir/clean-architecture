@@ -7,6 +7,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.NonNull;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -17,7 +18,7 @@ class R2dbcAuditingRegistrar implements ImportBeanDefinitionRegistrar {
 
   @Override
   public void registerBeanDefinitions(
-      AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+      @NonNull AnnotationMetadata annotationMetadata, @NonNull BeanDefinitionRegistry registry) {
     Class<?>[] clazz = getBasePackageClasses(annotationMetadata);
 
     if (clazz == null || clazz.length == 0) {

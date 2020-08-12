@@ -1,0 +1,37 @@
+server:
+  port: 8181
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/cleanarchitecture
+    username: postgres
+    password: postgres
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      connection-timeout: 30000
+      maximum-pool-size: 300
+      minimum-idle: 5
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1;
+      validation-timeout: 28000
+  jpa:
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: true
+    generate-ddl: false
+    open-in-view: false
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  autoconfigure:
+    exclude:
+    - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  jackson:
+    time-zone: UTC
+app:
+  retry:
+    max-attempts: 1000
+    delay: 1

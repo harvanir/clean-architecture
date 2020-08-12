@@ -6,7 +6,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 
 /** @author Harvan Irsyadi */
-public class AuditingHandler {
+class AuditingHandler {
 
   private static final CurrentDateTimeProvider dateTimeProvider = CurrentDateTimeProvider.INSTANCE;
 

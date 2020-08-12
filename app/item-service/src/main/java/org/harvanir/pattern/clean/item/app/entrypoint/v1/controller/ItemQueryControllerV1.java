@@ -4,7 +4,9 @@ import org.harvanir.pattern.clean.item.app.entrypoint.v1.entity.ItemResponseRest
 import org.harvanir.pattern.clean.item.app.entrypoint.v1.presenter.BeanMapper;
 import org.harvanir.pattern.clean.item.app.entrypoint.v1.presenter.ItemFindPaginationPresenterImpl;
 import org.harvanir.pattern.clean.item.app.entrypoint.v1.presenter.ItemFindPresenterImpl;
+import org.harvanir.pattern.clean.item.core.entity.FindWithDelayRequest;
 import org.harvanir.pattern.clean.item.core.usecase.find.ItemFindUseCase;
+import org.harvanir.pattern.clean.item.core.usecase.find.ItemFindWithDelayUseCase;
 import org.harvanir.pattern.clean.item.core.usecase.findpaginate.ItemFindPaginationUseCase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +24,18 @@ public class ItemQueryControllerV1 {
 
   private final ItemFindPaginationUseCase itemFindPaginationUseCase;
 
+  private final ItemFindWithDelayUseCase itemFindWithDelayUseCase;
+
   private final BeanMapper beanMapper;
 
   public ItemQueryControllerV1(
       ItemFindUseCase itemFindUseCase,
       ItemFindPaginationUseCase itemFindPaginationUseCase,
+      ItemFindWithDelayUseCase itemFindWithDelayUseCase,
       BeanMapper beanMapper) {
     this.itemFindUseCase = itemFindUseCase;
     this.itemFindPaginationUseCase = itemFindPaginationUseCase;
+    this.itemFindWithDelayUseCase = itemFindWithDelayUseCase;
     this.beanMapper = beanMapper;
   }
 
@@ -44,7 +50,16 @@ public class ItemQueryControllerV1 {
   @GetMapping("/{id}")
   public ItemResponseRest find(@PathVariable Long id) {
     ItemFindPresenterImpl presenter = new ItemFindPresenterImpl(beanMapper);
-    itemFindUseCase.find(id, presenter);
+    itemFindUseCase.execute(id, presenter);
+
+    return presenter.getResponse();
+  }
+
+  @GetMapping("/{id}/{delaySeconds}")
+  public ItemResponseRest find(@PathVariable Long id, @PathVariable Integer delaySeconds) {
+    ItemFindPresenterImpl presenter = new ItemFindPresenterImpl(beanMapper);
+    itemFindWithDelayUseCase.execute(
+        FindWithDelayRequest.builder().id(id).delaySeconds(delaySeconds).build(), presenter);
 
     return presenter.getResponse();
   }
