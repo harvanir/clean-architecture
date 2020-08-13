@@ -15,6 +15,11 @@ import reactor.core.publisher.Mono;
 /** @author Harvan Irsyadi */
 public class ItemGatewayR2dbc implements ItemGateway {
 
+  private static final String FIND_WITH_DELAY =
+      "select i.id, i.name, i.price, i.quantity, i.updated_at, i.created_at %s from items i where id = :id";
+
+  private static final String FIND_NO_DELAY = String.format(FIND_WITH_DELAY, "");
+
   private final GatewayBeanMapper mapper;
 
   private final ItemRepository itemRepository;
@@ -53,9 +58,7 @@ public class ItemGatewayR2dbc implements ItemGateway {
 
   @Override
   public Mono<ItemResponse> findWithDelay(FindWithDelayRequest request) {
-    String sql =
-        String.format(
-            "select i.* %s from items i where id = :id", getSleep(request.getDelaySeconds()));
+    String sql = getSql(request.getDelaySeconds());
 
     return databaseClient
         .execute(sql)
@@ -66,11 +69,11 @@ public class ItemGatewayR2dbc implements ItemGateway {
         .map(mapper::map);
   }
 
-  private String getSleep(Integer delaySeconds) {
+  private String getSql(Integer delaySeconds) {
     if (delaySeconds != null && delaySeconds > 0) {
-      return String.format(", pg_sleep(%s)", delaySeconds);
+      return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
     }
 
-    return "";
+    return FIND_NO_DELAY;
   }
 }

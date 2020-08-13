@@ -19,7 +19,7 @@ spring:
       enabled: true
       #      validation-query: SELECT 1; # slow performance when enabled
       initial-size: 10 # default value
-      max-size: 10 # default value
+      max-size: 300 # default value
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration

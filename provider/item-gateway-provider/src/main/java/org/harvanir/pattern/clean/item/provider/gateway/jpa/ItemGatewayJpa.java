@@ -22,6 +22,8 @@ public class ItemGatewayJpa implements ItemGateway {
   private static final String FIND_WITH_DELAY =
       "select i.id, i.name, i.price, i.quantity, i.updated_at, i.created_at %s from items i where id = ?";
 
+  private static final String FIND_NO_DELAY = String.format(FIND_WITH_DELAY, "");
+
   private static final ResultSetExtractor<ItemResponse> RESULT_SET_EXTRACTOR =
       rs -> {
         if (rs.next()) {
@@ -96,17 +98,17 @@ public class ItemGatewayJpa implements ItemGateway {
 
   @Override
   public ItemResponse findWithDelay(FindWithDelayRequest request) {
-    String sql = String.format(FIND_WITH_DELAY, getSleep(request.getDelaySeconds()));
+    String sql = getSql(request.getDelaySeconds());
     PreparedStatementSetter preparedStatementSetter = ps -> ps.setLong(1, request.getId());
 
     return jdbcTemplate.query(sql, preparedStatementSetter, RESULT_SET_EXTRACTOR);
   }
 
-  private String getSleep(Integer delaySeconds) {
+  private String getSql(Integer delaySeconds) {
     if (delaySeconds != null && delaySeconds > 0) {
-      return String.format(", pg_sleep(%s)", delaySeconds);
+      return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
     }
 
-    return "";
+    return FIND_NO_DELAY;
   }
 }

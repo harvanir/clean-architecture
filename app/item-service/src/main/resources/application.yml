@@ -1,5 +1,8 @@
 server:
   port: 8181
+  tomcat:
+    threads:
+      max: 300
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/cleanarchitecture
@@ -9,7 +12,7 @@ spring:
       driver-class-name: org.postgresql.Driver
       connection-timeout: 30000
       maximum-pool-size: 300
-      minimum-idle: 5
+      minimum-idle: 10
       idle-timeout: 600000
       max-lifetime: 1800000
       connection-test-query: SELECT 1;

@@ -8,15 +8,15 @@
   - etc ...
 - 1 Computer as test client (Intel Core i5, 8GB)
 - 1 Computer as backend services & database server (Intel Core i5, 12GB)
-- Using LAN Network
+- Using LAN Network 1 Gbps
 - Using docker compose file <i>docker-compose-using-host-db.yaml</i> with compatibility mode
 - Warm up
 - Duration: 3 mins
-- Test operation (DB Write): invoke API resource [POST]<code>/v1/items</code>
+- Test operation (DB Read): invoke API resource [GET]<code>/v1/items/{id}/{delaySecond}</code>
 - Test method: perform test individually.
 - Each JVM heap memory setup is done by changing the limit.memory in the docker-compose file.
-- For non reactive driver using fix 300 thread pool connections.
-- For reactive driver using 10-50 pool connections.
+- For non reactive driver using fix 10-300 thread pool connections.
+- For reactive driver using 10-300 pool connections.
 
 ![](topology.png)
 
@@ -44,23 +44,20 @@
 #### JDBC
 ![](158mb-100c/2-a-vm-158m-100c.png)
 
-#### R2DBC with 10 pool
+#### R2DBC
 ![](158mb-100c/2-b-vm-158m-100c.png)
-
-#### R2DBC w/o pool
-![](158mb-100c/2-c-vm-158m-100c.png)
 
 ## Using 256MB Heap size, 100 concurrent
 
 ### Througput & Latency
-![](256mb-100c/3-256mb-100c.png)
+![](256mb-100c/256m-100c-300p-d0.png)
 
 ### Java Heap Space
 #### JDBC
-![](256mb-100c/3-a-vm-256m-100c.png)
+![](256mb-100c/nr-256m-100c-300p-d0.png)
 
-#### R2DBC with 10 pool
-![](256mb-100c/3-b-vm-256m-100c.png)
+#### R2DBC
+![](256mb-100c/r-256m-100c-300p-d0.png)
 
 #### R2DBC w/o pool
 ![](256mb-100c/3-c-vm-256m-100c.png)
