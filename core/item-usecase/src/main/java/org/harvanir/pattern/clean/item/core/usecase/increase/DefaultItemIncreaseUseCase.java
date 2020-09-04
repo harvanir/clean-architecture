@@ -21,6 +21,8 @@ public class DefaultItemIncreaseUseCase implements ItemIncreaseUseCase {
       backoff = @Backoff(delayExpression = "${app.retry.delay}"))
   @Override
   public void increase(ItemIncreaseRequest request, ItemIncreasePresenter presenter) {
+    itemGateway.lock(request.getId());
+
     ItemResponse response = itemGateway.increase(request.getId(), request.getIncrement());
 
     presenter.present(response);

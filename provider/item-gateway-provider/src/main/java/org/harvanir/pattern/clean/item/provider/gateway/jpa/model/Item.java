@@ -45,6 +45,8 @@ public class Item {
 
   @Column private BigDecimal price;
 
+  @Column private Boolean isFirst;
+
   @CreatedDate @Column private LocalDateTime createdAt;
 
   @LastModifiedDate @Column private LocalDateTime updatedAt;

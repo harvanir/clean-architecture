@@ -16,6 +16,8 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ConcurrentModificationException;
+
 /** @author Harvan Irsyadi */
 public class ItemGatewayJpa implements ItemGateway {
 
@@ -104,11 +106,21 @@ public class ItemGatewayJpa implements ItemGateway {
     return jdbcTemplate.query(sql, preparedStatementSetter, RESULT_SET_EXTRACTOR);
   }
 
-  private String getSql(Integer delaySeconds) {
+  private String getSql(Float delaySeconds) {
     if (delaySeconds != null && delaySeconds > 0) {
       return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
     }
 
     return FIND_NO_DELAY;
+  }
+
+  @Transactional
+  @Override
+  public void lock(Long id) {
+    try {
+      itemJpaRepository.lock(id);
+    } catch (Exception e) {
+      throw new ConcurrentModificationException("Concurrency process on Item", e);
+    }
   }
 }
