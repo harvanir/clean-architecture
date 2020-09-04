@@ -104,7 +104,7 @@ public class ItemGatewayJpa implements ItemGateway {
     return jdbcTemplate.query(sql, preparedStatementSetter, RESULT_SET_EXTRACTOR);
   }
 
-  private String getSql(Integer delaySeconds) {
+  private String getSql(Float delaySeconds) {
     if (delaySeconds != null && delaySeconds > 0) {
       return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
     }

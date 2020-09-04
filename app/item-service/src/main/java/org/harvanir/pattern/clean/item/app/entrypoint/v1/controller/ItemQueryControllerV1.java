@@ -56,7 +56,7 @@ public class ItemQueryControllerV1 {
   }
 
   @GetMapping("/{id}/{delaySeconds}")
-  public ItemResponseRest find(@PathVariable Long id, @PathVariable Integer delaySeconds) {
+  public ItemResponseRest find(@PathVariable Long id, @PathVariable Float delaySeconds) {
     ItemFindPresenterImpl presenter = new ItemFindPresenterImpl(beanMapper);
     itemFindWithDelayUseCase.execute(
         FindWithDelayRequest.builder().id(id).delaySeconds(delaySeconds).build(), presenter);

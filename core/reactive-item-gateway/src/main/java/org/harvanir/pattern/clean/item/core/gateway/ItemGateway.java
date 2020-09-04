@@ -14,7 +14,7 @@ public interface ItemGateway {
 
   Page<ItemResponse> findAll(Pageable pageable);
 
-  Mono<ItemResponse> findWithDelay(Long id);
+  Mono<ItemResponse> findById(Long id);
 
   Mono<ItemResponse> findWithDelay(FindWithDelayRequest request);
 

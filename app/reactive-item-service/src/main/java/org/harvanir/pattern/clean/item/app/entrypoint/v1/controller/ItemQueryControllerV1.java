@@ -43,7 +43,8 @@ public class ItemQueryControllerV1 {
   }
 
   @GetMapping("/{id}/{delaySeconds}")
-  public Mono<ItemResponseRest> findByIdAndDelaySeconds(@PathVariable Long id, @PathVariable Integer delaySeconds) {
+  public Mono<ItemResponseRest> findByIdAndDelaySeconds(
+      @PathVariable Long id, @PathVariable Float delaySeconds) {
     return Mono.defer(
         () -> {
           ItemFindPresenterImpl presenter = new ItemFindPresenterImpl(beanMapper);

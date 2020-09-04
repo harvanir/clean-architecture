@@ -14,5 +14,5 @@ public class FindWithDelayRequest {
 
   private Long id;
 
-  private Integer delaySeconds;
+  private Float delaySeconds;
 }

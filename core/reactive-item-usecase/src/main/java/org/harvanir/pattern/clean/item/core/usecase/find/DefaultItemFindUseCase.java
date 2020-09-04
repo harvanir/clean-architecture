@@ -14,6 +14,6 @@ public class DefaultItemFindUseCase implements ItemFindUseCase {
 
   @Override
   public Mono<Void> execute(Long id, ItemFindPresenter presenter) {
-    return itemGateway.findWithDelay(id).flatMap(presenter::execute);
+    return itemGateway.findById(id).flatMap(presenter::execute);
   }
 }
