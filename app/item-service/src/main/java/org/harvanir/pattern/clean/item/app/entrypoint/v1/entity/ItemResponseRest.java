@@ -28,4 +28,10 @@ public class ItemResponseRest {
   private Date createdAt;
 
   private Date updatedAt;
+
+  /**
+   * See {@link
+   * org.harvanir.pattern.clean.item.app.support.serializer.JsonFilterSerializerCustomizer}
+   */
+  private String toBeFiltered;
 }
