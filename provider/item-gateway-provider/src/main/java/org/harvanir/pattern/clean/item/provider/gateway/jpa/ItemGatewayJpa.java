@@ -9,8 +9,10 @@ import org.harvanir.pattern.clean.item.core.gateway.ItemGateway;
 import org.harvanir.pattern.clean.item.provider.gateway.jpa.model.Item;
 import org.harvanir.pattern.clean.item.provider.gateway.jpa.model.QItem;
 import org.harvanir.pattern.clean.item.provider.gateway.jpa.repository.ItemJpaRepository;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -24,7 +26,7 @@ public class ItemGatewayJpa implements ItemGateway {
 
   private static final String FIND_NO_DELAY = String.format(FIND_WITH_DELAY, "");
 
-  private static final ResultSetExtractor<ItemResponse> RESULT_SET_EXTRACTOR =
+  private final ResultSetExtractor<ItemResponse> resultSetExtractor =
       rs -> {
         if (rs.next()) {
           return ItemResponse.builder()
@@ -39,6 +41,9 @@ public class ItemGatewayJpa implements ItemGateway {
 
         return null;
       };
+
+  private final BeanPropertyRowMapper<ItemResponse> beanPropertyRowMapper =
+      new BeanPropertyRowMapper<>(ItemResponse.class);
 
   private final GatewayBeanMapper mapper;
 
@@ -99,9 +104,28 @@ public class ItemGatewayJpa implements ItemGateway {
   @Override
   public ItemResponse findWithDelay(FindWithDelayRequest request) {
     String sql = getSql(request.getDelaySeconds());
-    PreparedStatementSetter preparedStatementSetter = ps -> ps.setLong(1, request.getId());
 
-    return jdbcTemplate.query(sql, preparedStatementSetter, RESULT_SET_EXTRACTOR);
+    return queryForObject(sql, request);
+    //    return queryResultSetExtractor(sql, request);
+    //    return queryRowMapper(sql, request);
+  }
+
+  private ItemResponse queryForObject(String sql, FindWithDelayRequest request) {
+    Object[] args = new Object[] {request.getId()};
+    return jdbcTemplate.queryForObject(sql, args, beanPropertyRowMapper);
+  }
+
+  private PreparedStatementSetter getPreparedStatementSetter(FindWithDelayRequest request) {
+    return ps -> ps.setLong(1, request.getId());
+  }
+
+  private ItemResponse queryResultSetExtractor(String sql, FindWithDelayRequest request) {
+    return jdbcTemplate.query(sql, getPreparedStatementSetter(request), resultSetExtractor);
+  }
+
+  private ItemResponse queryRowMapper(String sql, FindWithDelayRequest request) {
+    return DataAccessUtils.nullableSingleResult(
+        jdbcTemplate.query(sql, getPreparedStatementSetter(request), beanPropertyRowMapper));
   }
 
   private String getSql(Float delaySeconds) {
