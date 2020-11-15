@@ -133,6 +133,7 @@ services:
       - postgres
       - item-migration
     ulimits:
+      nproc: 514933
       nofile:
         soft: 100000
         hard: 100000

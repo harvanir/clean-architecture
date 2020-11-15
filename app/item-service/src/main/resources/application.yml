@@ -28,10 +28,15 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
         format_sql: true
+    #        cache: # uncomment to use 2nd cache
+    #          use_query_cache: true
+    #          provider_class: org.hibernate.cache.EhCacheProvider
+    #          region:
+    #            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
   autoconfigure:
     exclude:
-    - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
   jackson:
     time-zone: UTC
 #logging:
@@ -41,6 +46,7 @@ spring:
 #    org.springframework.jdbc.core.StatementCreatorUtils: trace
 #    org.springframework.data: trace
 #    org.springframework.transaction: trace
+#    org.hibernate.SQL: debug
 #    org.hibernate: trace
 app:
   retry:

@@ -4,7 +4,6 @@ import org.harvanir.pattern.clean.item.core.entity.CreateItemRequest;
 import org.harvanir.pattern.clean.item.core.entity.FindWithDelayRequest;
 import org.harvanir.pattern.clean.item.core.entity.ItemResponse;
 import org.harvanir.pattern.clean.item.core.gateway.ItemGateway;
-import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.model.Item;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,7 @@ import reactor.core.publisher.Mono;
 public class ItemGatewayR2dbc implements ItemGateway {
 
   private static final String FIND_WITH_DELAY =
-      "select i.id, i.name, i.price, i.quantity, i.updated_at, i.created_at %s from items i where id in($1)";
+      "select i.id, i.name, i.price, i.quantity, i.updated_at, i.created_at %s from items i where id = :$1";
 
   private static final String FIND_NO_DELAY = String.format(FIND_WITH_DELAY, "");
 
@@ -63,10 +62,9 @@ public class ItemGatewayR2dbc implements ItemGateway {
     return databaseClient
         .execute(sql)
         .bind(0, request.getId())
-        .as(Item.class)
+        .as(ItemResponse.class)
         .fetch()
-        .one()
-        .map(mapper::map);
+        .one();
   }
 
   private String getSql(Float delaySeconds) {

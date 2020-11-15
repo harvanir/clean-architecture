@@ -98,7 +98,17 @@ public class ItemGatewayJpa implements ItemGateway {
 
   @Override
   public ItemResponse findById(Long id) {
-    return itemJpaRepository.findOne(getBaseExpression(), getItem().id.eq(id));
+    //    return mapper.map(itemJpaRepository.findById(id).orElse(null));
+    //    return itemJpaRepository.findOne(getBaseExpression(), getItem().id.eq(id));
+    return itemJpaRepository.findUsingId(id);
+  }
+
+  private String getSql(Float delaySeconds) {
+    if (delaySeconds != null && delaySeconds > 0) {
+      return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
+    }
+
+    return FIND_NO_DELAY;
   }
 
   @Override
@@ -124,15 +134,7 @@ public class ItemGatewayJpa implements ItemGateway {
   }
 
   private ItemResponse queryRowMapper(String sql, FindWithDelayRequest request) {
-    return DataAccessUtils.nullableSingleResult(
+    return DataAccessUtils.uniqueResult(
         jdbcTemplate.query(sql, getPreparedStatementSetter(request), beanPropertyRowMapper));
-  }
-
-  private String getSql(Float delaySeconds) {
-    if (delaySeconds != null && delaySeconds > 0) {
-      return String.format(FIND_WITH_DELAY, String.format(", pg_sleep(%s)", delaySeconds));
-    }
-
-    return FIND_NO_DELAY;
   }
 }

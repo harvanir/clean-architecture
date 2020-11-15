@@ -20,6 +20,6 @@ public interface BeanMapper {
     return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
   }
 
-  @Mapping(target = "toBeFiltered")
+  @Mapping(target = "toBeFiltered", ignore = true)
   ItemResponseRest mapToItemResponse(ItemResponse itemResponse);
 }
