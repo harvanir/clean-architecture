@@ -12,7 +12,7 @@ import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.ItemGatewayR2dbc;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.repository.ItemRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.r2dbc.core.DatabaseClient;
+import org.springframework.r2dbc.core.DatabaseClient;
 
 /** @author Harvan Irsyadi */
 @Configuration(proxyBeanMethods = false)
