@@ -2,6 +2,7 @@ package org.harvanir.pattern.clean.item.app.entrypoint.v1.controller;
 
 import org.harvanir.pattern.clean.item.app.BaseTestConfiguration;
 import org.harvanir.pattern.clean.item.core.entity.CreateItemRequest;
+import org.harvanir.pattern.clean.item.core.entity.ItemResponse;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.model.Item;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.repository.ItemRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -11,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.r2dbc.core.DatabaseClient;
-import org.springframework.data.r2dbc.core.FetchSpec;
+import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.r2dbc.core.RowsFetchSpec;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +23,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -44,6 +46,18 @@ class ItemQueryControllerV1Test {
   @AfterEach
   void afterEach() {
     verifyNoMoreInteractions(itemRepository, databaseClient);
+  }
+
+  private String getLocalDateTimeString(LocalDateTime localDateTime) {
+    String localDateTimeString =
+        DateTimeFormatter.ISO_DATE_TIME
+            .format(
+                ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
+                    .toOffsetDateTime()
+                    .withOffsetSameInstant(ZoneOffset.UTC))
+            .replace("Z", "");
+
+    return StringUtils.padZeroRight(localDateTimeString, 23) + "+00:00";
   }
 
   @Test
@@ -69,14 +83,7 @@ class ItemQueryControllerV1Test {
 
     when(itemRepository.findById(id)).thenReturn(Mono.just(item));
 
-    String nowString =
-        DateTimeFormatter.ISO_DATE_TIME
-            .format(
-                ZonedDateTime.of(now, ZoneId.systemDefault())
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC))
-            .replace("Z", "");
-    nowString = (nowString.length() < 23 ? nowString + "0" : nowString) + "+00:00";
+    String nowString = getLocalDateTimeString(now);
 
     webTestClient
         .get()
@@ -113,35 +120,24 @@ class ItemQueryControllerV1Test {
     LocalDateTime now = LocalDateTime.now();
     Long id = 1L;
     Integer delaySeconds = 2;
-    Item item =
-        Item.builder()
+    ItemResponse item =
+        ItemResponse.builder()
             .id(id)
             .name(body.getName())
             .price(body.getPrice())
             .quantity(body.getQuantity())
             .createdAt(now)
             .updatedAt(now)
-            .version(1)
             .build();
     DatabaseClient.GenericExecuteSpec spec = Mockito.mock(DatabaseClient.GenericExecuteSpec.class);
-    DatabaseClient.TypedExecuteSpec<Item> typedExecuteSpec =
-        Mockito.mock(DatabaseClient.TypedExecuteSpec.class);
-    FetchSpec<Item> fetch = Mockito.mock(FetchSpec.class);
+    RowsFetchSpec<ItemResponse> rowFetchSpec = Mockito.mock(RowsFetchSpec.class);
 
-    when(fetch.one()).thenReturn(Mono.just(item));
-    when(spec.bind("id", id)).thenReturn(spec);
-    when(typedExecuteSpec.fetch()).thenReturn(fetch);
-    when(spec.as(Item.class)).thenReturn(typedExecuteSpec);
-    when(databaseClient.execute(anyString())).thenReturn(spec);
+    when(rowFetchSpec.one()).thenReturn(Mono.just(item));
+    when(spec.bind(0, id)).thenReturn(spec);
+    when(spec.map(any(Function.class))).thenReturn(rowFetchSpec);
+    when(databaseClient.sql(anyString())).thenReturn(spec);
 
-    String nowString =
-        DateTimeFormatter.ISO_DATE_TIME
-            .format(
-                ZonedDateTime.of(now, ZoneId.systemDefault())
-                    .toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.UTC))
-            .replace("Z", "");
-    nowString = (nowString.length() < 23 ? nowString + "0" : nowString) + "+00:00";
+    String nowString = getLocalDateTimeString(now);
 
     webTestClient
         .get()
@@ -163,6 +159,6 @@ class ItemQueryControllerV1Test {
         .jsonPath("$.updatedAt")
         .isEqualTo(nowString);
 
-    verify(databaseClient, times(1)).execute(any(String.class));
+    verify(databaseClient, times(1)).sql(any(String.class));
   }
 }
