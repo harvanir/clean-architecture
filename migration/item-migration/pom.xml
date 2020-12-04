@@ -41,6 +41,12 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- still issue - https://github.com/spring-projects/spring-boot/issues/24192 -->
+                <!--                <configuration>-->
+                <!--                    <layers>-->
+                <!--                        <enabled>true</enabled>-->
+                <!--                    </layers>-->
+                <!--                </configuration>-->
             </plugin>
         </plugins>
     </build>
