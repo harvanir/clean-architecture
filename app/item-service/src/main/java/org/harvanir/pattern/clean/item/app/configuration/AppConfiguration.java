@@ -1,5 +1,6 @@
 package org.harvanir.pattern.clean.item.app.configuration;
 
+import org.harvanir.pattern.clean.item.core.configuration.AppProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;

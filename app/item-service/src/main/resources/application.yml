@@ -52,3 +52,6 @@ app:
   retry:
     max-attempts: 1000
     delay: 1
+    on-exceptions:
+      - org.hibernate.StaleObjectStateException
+      - org.springframework.orm.ObjectOptimisticLockingFailureException

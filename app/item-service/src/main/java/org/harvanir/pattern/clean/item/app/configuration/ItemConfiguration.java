@@ -1,5 +1,6 @@
 package org.harvanir.pattern.clean.item.app.configuration;
 
+import org.harvanir.pattern.clean.item.core.configuration.AppProperties;
 import org.harvanir.pattern.clean.item.core.gateway.ItemGateway;
 import org.harvanir.pattern.clean.item.core.usecase.create.DefaultItemCreationUseCase;
 import org.harvanir.pattern.clean.item.core.usecase.create.ItemCreationUseCase;
@@ -52,8 +53,8 @@ public class ItemConfiguration {
   }
 
   @Bean
-  public IncreaseExceptionChecker increaseExceptionChecker() {
-    return new IncreaseExceptionChecker();
+  public IncreaseExceptionChecker increaseExceptionChecker(AppProperties appProperties) {
+    return new IncreaseExceptionChecker(appProperties.getRetry().getOnExceptions());
   }
 
   @Bean

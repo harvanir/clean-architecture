@@ -15,8 +15,9 @@ public class DefaultItemIncreaseUseCase implements ItemIncreaseUseCase {
     this.itemGateway = itemGateway;
   }
 
+  /** @see IncreaseExceptionChecker#shouldRetry(Throwable) */
   @Retryable(
-      exceptionExpression = "#{@increaseExceptionChecker.shouldRetry(#root)}",
+      exceptionExpression = "@increaseExceptionChecker.shouldRetry(#root)",
       maxAttemptsExpression = "${app.retry.max-attempts}",
       backoff = @Backoff(delayExpression = "${app.retry.delay}"))
   @Override
