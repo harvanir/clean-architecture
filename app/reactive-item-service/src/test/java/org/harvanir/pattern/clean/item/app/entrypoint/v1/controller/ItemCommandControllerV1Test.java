@@ -84,4 +84,46 @@ class ItemCommandControllerV1Test {
 
     verify(itemRepository, times(1)).save(any(Item.class));
   }
+
+  @Test
+  void createIncrease() {
+    LocalDateTime now = LocalDateTime.now();
+    int ten = 10;
+    int eleven = 11;
+    Item item =
+        Item.builder()
+            .id(new Random().nextLong())
+            .name(ItemCommandControllerV1Test.class.getName())
+            .price(BigDecimal.TEN)
+            .quantity(ten)
+            .createdAt(now)
+            .updatedAt(now)
+            .version(1)
+            .build();
+    when(itemRepository.findById(item.getId())).thenReturn(Mono.just(item));
+    when(itemRepository.save(any(Item.class))).thenReturn(Mono.just(item));
+
+    webTestClient
+        .put()
+        .uri(ApiPathV1.V1_ITEMS + String.format("/%s/increase", item.getId()))
+        .exchange()
+        .expectStatus()
+        .is2xxSuccessful()
+        .expectBody()
+        .jsonPath("$.id")
+        .isNotEmpty()
+        .jsonPath("$.name")
+        .isEqualTo(item.getName())
+        .jsonPath("$.quantity")
+        .isEqualTo(eleven)
+        .jsonPath("$.price")
+        .isEqualTo(item.getPrice())
+        .jsonPath("$.createdAt")
+        .isNotEmpty()
+        .jsonPath("$.updatedAt")
+        .isNotEmpty();
+
+    verify(itemRepository, times(1)).findById(item.getId());
+    verify(itemRepository, times(1)).save(item);
+  }
 }

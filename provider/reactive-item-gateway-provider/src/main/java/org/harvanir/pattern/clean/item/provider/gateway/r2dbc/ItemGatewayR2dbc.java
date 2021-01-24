@@ -50,6 +50,7 @@ public class ItemGatewayR2dbc implements ItemGateway {
     this.databaseClient = databaseClient;
   }
 
+  @Transactional
   @Override
   public Mono<ItemResponse> save(CreateItemRequest request) {
     return itemRepository.save(mapper.map(request)).map(mapper::map);
@@ -57,8 +58,12 @@ public class ItemGatewayR2dbc implements ItemGateway {
 
   @Transactional
   @Override
-  public ItemResponse increase(Long id, int increment) {
-    return null;
+  public Mono<ItemResponse> increase(Long id, int increment) {
+    return itemRepository
+        .findById(id)
+        .doOnNext(item -> item.setQuantity(item.getQuantity() + increment))
+        .flatMap(itemRepository::save)
+        .map(mapper::map);
   }
 
   @Override

@@ -7,6 +7,8 @@ import org.harvanir.pattern.clean.item.core.usecase.find.DefaultItemFindUseCase;
 import org.harvanir.pattern.clean.item.core.usecase.find.DefaultItemFindWithDelayUseCase;
 import org.harvanir.pattern.clean.item.core.usecase.find.ItemFindUseCase;
 import org.harvanir.pattern.clean.item.core.usecase.find.ItemFindWithDelayUseCase;
+import org.harvanir.pattern.clean.item.core.usecase.increase.DefaultItemIncreaseUseCase;
+import org.harvanir.pattern.clean.item.core.usecase.increase.ItemIncreaseUseCase;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.GatewayBeanMapper;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.ItemGatewayR2dbc;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.repository.ItemRepository;
@@ -39,5 +41,10 @@ public class CoreConfiguration {
   @Bean
   public ItemFindWithDelayUseCase itemFindWithDelayUseCase(ItemGateway itemGateway) {
     return new DefaultItemFindWithDelayUseCase(itemGateway);
+  }
+
+  @Bean
+  public ItemIncreaseUseCase itemIncreaseUseCase(ItemGateway itemGateway) {
+    return new DefaultItemIncreaseUseCase(itemGateway);
   }
 }

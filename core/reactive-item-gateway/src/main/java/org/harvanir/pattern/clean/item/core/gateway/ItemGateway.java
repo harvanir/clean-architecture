@@ -18,5 +18,5 @@ public interface ItemGateway {
 
   Mono<ItemResponse> findWithDelay(FindWithDelayRequest request);
 
-  ItemResponse increase(Long id, int increment);
+  Mono<ItemResponse> increase(Long id, int increment);
 }
