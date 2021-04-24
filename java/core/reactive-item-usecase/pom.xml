@@ -6,21 +6,25 @@
         <groupId>org.harvanir.pattern.clean-architecture</groupId>
         <artifactId>reactive-clean-architecture-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../parent/reactive</relativePath>
+        <relativePath>../../parent/reactive/pom.xml</relativePath>
     </parent>
-    <artifactId>reactive-item-entity</artifactId>
+    <artifactId>reactive-item-usecase</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId> <!--> TODO remove </-->
+            <artifactId>spring-data-commons</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.harvanir.pattern.clean-architecture</groupId>
+            <artifactId>reactive-item-gateway</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

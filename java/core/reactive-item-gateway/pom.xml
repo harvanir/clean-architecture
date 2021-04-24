@@ -4,23 +4,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.harvanir.pattern.clean-architecture</groupId>
-        <artifactId>clean-architecture-parent</artifactId>
+        <artifactId>reactive-clean-architecture-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../parent/non-reactive</relativePath>
+        <relativePath>../../parent/reactive/pom.xml</relativePath>
     </parent>
-    <artifactId>base-jpa</artifactId>
+    <artifactId>reactive-item-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
+            <groupId>org.springframework.data</groupId> <!--> TODO remove </-->
+            <artifactId>spring-data-commons</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.harvanir.pattern.clean-architecture</groupId>
+            <artifactId>reactive-item-entity</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
