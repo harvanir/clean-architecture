@@ -4,19 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.harvanir.pattern.clean-architecture</groupId>
-        <artifactId>reactive-clean-architecture-parent</artifactId>
+        <artifactId>clean-architecture-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../parent/reactive</relativePath>
+        <relativePath>../../parent/non-reactive/pom.xml</relativePath>
     </parent>
-    <artifactId>reactive-item-gateway</artifactId>
+    <artifactId>item-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId> <!--> TODO remove </-->
             <artifactId>spring-data-commons</artifactId>
@@ -24,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.harvanir.pattern.clean-architecture</groupId>
-            <artifactId>reactive-item-entity</artifactId>
+            <artifactId>item-entity</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

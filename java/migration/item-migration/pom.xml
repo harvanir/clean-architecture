@@ -6,7 +6,7 @@
         <groupId>org.harvanir.pattern.clean-architecture</groupId>
         <artifactId>clean-architecture-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../../parent/non-reactive</relativePath>
+        <relativePath>../../parent/non-reactive/pom.xml</relativePath>
     </parent>
     <artifactId>item-migration</artifactId>
     <version>0.0.1-SNAPSHOT</version>
