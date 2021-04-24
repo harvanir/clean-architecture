@@ -5,6 +5,7 @@ import org.harvanir.pattern.clean.item.core.entity.CreateItemRequest;
 import org.harvanir.pattern.clean.item.core.entity.FindWithDelayRequest;
 import org.harvanir.pattern.clean.item.core.entity.ItemResponse;
 import org.harvanir.pattern.clean.item.core.gateway.ItemGateway;
+import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.model.Item;
 import org.harvanir.pattern.clean.item.provider.gateway.r2dbc.repository.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,9 +62,13 @@ public class ItemGatewayR2dbc implements ItemGateway {
   public Mono<ItemResponse> increase(Long id, int increment) {
     return itemRepository
         .findById(id)
-        .doOnNext(item -> item.setQuantity(item.getQuantity() + increment))
+        .doOnNext(item -> increase(item, increment))
         .flatMap(itemRepository::save)
         .map(mapper::map);
+  }
+
+  private void increase(Item item, int increment) {
+    item.setQuantity(item.getQuantity() + increment);
   }
 
   @Override

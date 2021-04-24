@@ -29,6 +29,7 @@ spring:
 #logging:
 #  level:
 #    org.springframework.data: trace
+#    org.springframework.r2dbc: trace
 #    org.springframework.transaction: trace
 #    org.harvanir.pattern.clean.auditing: debug
 app:
