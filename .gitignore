@@ -32,3 +32,4 @@ build/
 
 ### Generated ###
 logs*
+go/bin
