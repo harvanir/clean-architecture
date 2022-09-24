@@ -32,3 +32,6 @@ build/
 
 ### Generated ###
 logs*
+
+### Docker ###
+postgres/data
