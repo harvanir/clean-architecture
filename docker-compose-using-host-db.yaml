@@ -40,7 +40,7 @@ services:
       net.ipv4.tcp_fin_timeout: 5
       net.ipv4.tcp_tw_reuse: 1
       net.ipv4.ip_local_port_range: 1025 65000
-      #      net.ipv4.tcp_congestion_control: htcp # not compatible with MacOS
+      #      net.ipv4.tcp_congestion_control: htcp
     environment:
       JVM_OPT: |-
         -XX:+UseG1GC
@@ -80,7 +80,7 @@ services:
       net.ipv4.tcp_fin_timeout: 5
       net.ipv4.tcp_tw_reuse: 1
       net.ipv4.ip_local_port_range: 1025 65000
-      #      net.ipv4.tcp_congestion_control: htcp # not compatible with MacOS
+      #      net.ipv4.tcp_congestion_control: htcp
     environment:
       JVM_OPT: |-
         -XX:+UseG1GC
@@ -120,7 +120,7 @@ services:
       net.ipv4.tcp_fin_timeout: 5
       net.ipv4.tcp_tw_reuse: 1
       net.ipv4.ip_local_port_range: 1025 65000
-      #      net.ipv4.tcp_congestion_control: htcp # not compatible with MacOS
+#      net.ipv4.tcp_congestion_control: htcp
     environment:
       JVM_OPT: |-
         -XX:+UseG1GC
@@ -132,6 +132,29 @@ services:
         -Dcom.sun.management.jmxremote.port=7003 -Dcom.sun.management.jmxremote.rmi.port=7003
         -Dserver.port=8183
         -Dspring.r2dbc.pool.enabled=false
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  go-item-service:
+    container_name: go-item-service
+    image: go-item-service
+    ports:
+      - 8183:8080
+    networks:
+      - service
+    depends_on:
+      - postgres
+      - item-migration
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    sysctls:
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
     deploy:
       resources:
         limits:

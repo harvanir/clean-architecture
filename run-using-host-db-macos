@@ -1,0 +1,2 @@
+#!/bin/sh
+docker-compose -f docker-compose-using-host-db-macos.yaml -p using-host-db --compatibility up

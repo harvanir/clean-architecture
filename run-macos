@@ -1,0 +1,2 @@
+#!/bin/sh
+docker-compose -f docker-compose-macos.yaml --compatibility up

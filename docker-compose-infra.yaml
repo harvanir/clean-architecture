@@ -1,0 +1,62 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:12.2-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - service
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 100000
+        hard: 100000
+    sysctls:
+      net.core.somaxconn: 32768
+      net.ipv4.tcp_rmem: 4096 87380 134217728
+      net.ipv4.tcp_wmem: 4096 87380 134217728
+      net.ipv4.tcp_moderate_rcvbuf: 1
+      net.ipv4.tcp_no_metrics_save: 1
+      net.ipv4.tcp_mtu_probing: 1
+      net.ipv4.tcp_timestamps: 0
+      net.ipv4.tcp_sack: 0
+      net.ipv4.tcp_syncookies: 1
+      net.ipv4.tcp_max_syn_backlog: 4096
+      net.ipv4.tcp_fin_timeout: 5
+      net.ipv4.tcp_tw_reuse: 1
+      net.ipv4.ip_local_port_range: 1025 65000
+      #      net.ipv4.tcp_congestion_control: htcp # not compatible with MacOS
+    command:
+      postgres
+      -c 'max_connections=600'
+      -c 'shared_buffers=1GB'
+      -c 'effective_cache_size=3GB'
+      -c 'maintenance_work_mem=256MB'
+      -c 'checkpoint_completion_target=0.9'
+      -c 'wal_buffers=16MB'
+      -c 'default_statistics_target=100'
+      -c 'random_page_cost=1.1'
+      -c 'effective_io_concurrency=200'
+      -c 'work_mem=436kB'
+      -c 'min_wal_size=2GB'
+      -c 'max_wal_size=8GB'
+      -c 'max_worker_processes=8'
+      -c 'max_parallel_workers_per_gather=4'
+      -c 'max_parallel_workers=8'
+      -c 'max_parallel_maintenance_workers=4'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./postgres/db.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./postgres/data:/var/lib/postgresql/data/:rw
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+
+networks:
+  service:
+    driver: bridge
