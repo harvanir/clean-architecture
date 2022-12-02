@@ -140,13 +140,7 @@ services:
   go-item-service:
     container_name: go-item-service
     image: go-item-service
-    ports:
-      - 8183:8080
-    networks:
-      - service
-    depends_on:
-      - postgres
-      - item-migration
+    network_mode: host
     ulimits:
       nproc: 514933
       nofile:

@@ -26,7 +26,7 @@
           </elementProp>
           <elementProp name="concurrency" elementType="Argument">
             <stringProp name="Argument.name">concurrency</stringProp>
-            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.value">10</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="rampup" elementType="Argument">

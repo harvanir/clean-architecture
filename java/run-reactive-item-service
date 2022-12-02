@@ -1,0 +1,2 @@
+#!/bin/sh
+java -server -jar app/reactive-item-service/target/reactive-item-service-0.0.1-SNAPSHOT.jar

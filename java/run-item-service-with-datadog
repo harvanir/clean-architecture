@@ -1,0 +1,2 @@
+#!/bin/sh
+java -server -javaagent:ext-lib/dd-java-agent.jar -Ddd.logs.injection=true -Ddd.trace.sample.rate=1 -Ddd.service=item-service -Ddd.env=local -jar app/item-service/target/item-service-0.0.1-SNAPSHOT.jar

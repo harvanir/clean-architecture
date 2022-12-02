@@ -1,0 +1,2 @@
+#!/bin/sh
+java -server -jar app/item-service/target/item-service-0.0.1-SNAPSHOT.jar

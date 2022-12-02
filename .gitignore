@@ -32,6 +32,7 @@ build/
 
 ### Generated ###
 logs*
+.DS_Store
 
 ### Docker ###
 postgres/data

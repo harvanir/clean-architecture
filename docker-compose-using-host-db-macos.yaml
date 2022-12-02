@@ -1,0 +1,107 @@
+version: "3.7"
+
+services:
+  item-migration-host:
+    container_name: item-migration-host
+    image: item-migration
+    network_mode: host
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+        -XX:MaxRAMPercentage=90.0
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  item-service-host:
+    container_name: item-service-host
+    image: item-service
+    depends_on:
+      - item-migration-host
+    network_mode: host
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 100000
+        hard: 100000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7001 -Dcom.sun.management.jmxremote.rmi.port=7001
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  reactive-item-service-pool:
+    container_name: reactive-item-service-pool-host
+    image: reactive-item-service
+    depends_on:
+      - item-migration-host
+    network_mode: host
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 100000
+        hard: 100000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7002 -Dcom.sun.management.jmxremote.rmi.port=7002
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  reactive-item-service-wo-pool:
+    container_name: reactive-item-service-wo-pool-host
+    image: reactive-item-service
+    depends_on:
+      - item-migration-host
+    network_mode: host
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 100000
+        hard: 100000
+    environment:
+      JVM_OPT: |-
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+        -XX:MaxRAMPercentage=90.0
+        -Xlog:gc:GC.log -XX:+UseStringDeduplication
+        -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1
+        -Dcom.sun.management.jmxremote.port=7003 -Dcom.sun.management.jmxremote.rmi.port=7003
+        -Dserver.port=8183
+        -Dspring.r2dbc.pool.enabled=false
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+  go-item-service:
+    container_name: go-item-service-host
+    image: go-item-service
+    network_mode: host
+    ulimits:
+      nproc: 514933
+      nofile:
+        soft: 65535
+        hard: 65535
+    deploy:
+      resources:
+        limits:
+          memory: 256m
